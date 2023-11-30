@@ -36,11 +36,11 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <form action={{ route('category.delete', ['id' => $category->id]) }}
+                                        <form action={{ route('category.remove', ['id' => $category->id]) }}
                                             method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">
-                                                Delete
+                                                Remove
                                             </button>
                                         </form>
                                     </td>
@@ -61,5 +61,56 @@
                     </form>
                 </div>
             </div>
+            {{ $categories->links() }}
+
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Category name</th>
+                                <th scope="col">User name</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($trashCat as $trash)
+                                <tr>
+                                    <td>{{ $trash->id }}</td>
+                                    <td>{{ $trash->category_name }}</td>
+                                    <td>{{ $trash->user->name }}</td>
+                                    <td>{{ $trash->created_at->diffForHumans() }}</td>
+                                    <td>
+                                        <form action={{ route('category.restore', ['id' => $trash->id]) }}
+                                            method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success">
+                                                Restore
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action={{ route('category.delete', ['id' => $trash->id]) }}
+                                            method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $trashCat->links() }}
+                </div>
+            </div>
+
         </div>
+
+
+
+    </div>
 </x-app-layout>

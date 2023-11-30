@@ -12,8 +12,9 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.category', compact('categories'));
+        $categories = Category::latest()->paginate(10);
+        $trashCat = Category::onlyTrashed()->latest()->paginate(5);
+        return view('admin.category.category', compact('categories', 'trashCat'));
     }
 
     public function Create(Request $request)
@@ -44,9 +45,23 @@ class CategoryController extends Controller
         return Redirect()->route('AllCat');
     }
 
+    public function Remove($id)
+    {
+        Category::find($id)->delete();
+
+        return Redirect()->back();
+    }
+
+    public function Restore($id)
+    {
+        Category::onlyTrashed()->find($id)->restore();
+
+        return Redirect::back();
+    }
+
     public function Delete($id)
     {
-        Category::destroy($id);
+        Category::withTrashed()->find($id)->forceDelete();
 
         return Redirect::back();
     }

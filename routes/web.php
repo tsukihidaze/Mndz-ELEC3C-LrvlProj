@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +36,14 @@ Route::middleware([
 // Category Routes
 Route::get('/all/category', [CategoryController::class, 'index'])->name('AllCat');
 
-Route::post('/all/category/new', 'App\Http\Controllers\CategoryController@create');
+Route::post('/category/add', [CategoryController::class, 'Create'])->name('category.add');
+Route::get('/category/edit/{id}', [CategoryController::class, 'Edit'])->name('category.edit');
+Route::post('/category/update/{id}', [CategoryController::class, 'Update'])->name('category.update');
+Route::post('/category/remove/{id}', [CategoryController::class, "Remove"])->name('category.remove');
+Route::post('/category/restore/{id}', [CategoryController::class, "Restore"])->name('category.restore');
+Route::post('/category/delete/{id}', [CategoryController::class, 'Delete'])->name('category.delete');
+
+//Brand Controller
+Route::get('/brand/all', [BrandController::class, 'AllBrand'])->name("brand");
+
+Route::post('/brand/add', [BrandController::class, 'Create'])->name("brand.add");
